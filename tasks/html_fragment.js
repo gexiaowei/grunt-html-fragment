@@ -65,9 +65,32 @@ module.exports = function (grunt) {
                 }
             }
             grunt.log.warn('==>End replace(' + successCount + ' success,' + failCount + ' fail)');
-            return contents;
+            var $ = cheerio.load(contents);
+            var i,
+                scripts = $('script'), styles = $('link'),
+                scriptArr = [], styleArr = [];
+            //除去重复引用的script文件
+            for (i = 0; i < scripts.length; i++) {
+                var script = $(scripts[i]);
+                if (scriptArr.indexOf(script.attr('src')) >= 0) {
+                    script.remove();
+                } else {
+                    scriptArr.push(script.attr('src'));
+                }
+            }
+            //除去重复引用的style文件
+            for (i = 0; i < styles.length; i++) {
+                var style = $(styles[i]);
+                if (styleArr.indexOf(style.attr('href')) >= 0) {
+                    style.remove();
+                } else {
+                    styleArr.push(style.attr('href'));
+                    //在head中引用css样式
+                    $('head').append(style);
+                }
+            }
+            return $.html();
         }
-
 
         function findInclude(string) {
             var regex = /<!--\s*@@include\s*[= ]\s*(\S+)\s*(?:([^-]+)\s*)?-->/;

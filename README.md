@@ -1,6 +1,6 @@
 # grunt-html-fragment
 
-> The best Grunt plugin ever.
+> A plugin for combine fragments with template into a new html file. It also with clean the style and script which is repetitive in the new html file.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -94,4 +94,5 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+0.1.2 remove the style and script which is repetitive
+0.1.1 add @@include and ::(with jquery command);

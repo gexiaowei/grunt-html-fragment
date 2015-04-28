@@ -30,10 +30,10 @@ module.exports = function (grunt) {
 
         // Configuration to be run (and then tested).
         html_fragment: {
-            custom_options: {
-                options: {
-                    fragmentPath: 'test/fragment/'
-                },
+            options: {
+                fragmentPath: 'test/fragment/'
+            },
+            build: {
                 files: {
                     'tmp/': ['test/fixtures/123.html']
                 }
