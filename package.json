@@ -1,7 +1,7 @@
 {
   "name": "grunt-html-fragment",
   "description": "The best Grunt plugin ever.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/gexiaowei/grunt-html-fragment",
   "author": {
     "name": "Vivian",
@@ -35,6 +35,9 @@
   },
   "peerDependencies": {
     "grunt": "~0.4.5"
+  },
+  "dependencies": {
+    "cheerio": "~0.19.0"
   },
   "keywords": [
     "gruntplugin",
