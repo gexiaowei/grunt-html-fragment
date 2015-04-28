@@ -50,6 +50,15 @@ Default value: `'.'`
 A string value that is used to do something else with whatever else.
 
 ### Usage Examples
+```html
+<!-- @@include= head.html::div->addClass->title,div->addClass->name -->
+```
+It means include head.html to the html with command $('div').addClass('title') and $('div').addClass('name')
+'::' means it has command, 
+if you just do not want use command, you can use like that:
+```html
+<!-- @@include= head.html -->
+```
 
 #### Default Options
 In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
@@ -59,7 +68,7 @@ grunt.initConfig({
   html_fragment: {
     options: {},
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      'dest/': ['src/123.html'],
     },
   },
 });
@@ -72,11 +81,10 @@ In this example, custom options are used to do something else with whatever else
 grunt.initConfig({
   html_fragment: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      fragmentPath: 'fragment/'
     },
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      'dest/': ['src/123.html'],
     },
   },
 });
