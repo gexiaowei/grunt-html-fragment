@@ -37,62 +37,46 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.fragmentPath
 Type: `String`
-Default value: `',  '`
+Default value: `'fragment/'`
 
-A string value that is used to do something with whatever.
+A string value that is used to get all the fragment files.
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
 
 ### Usage Examples
 ```html
 <!-- @@include= head.html::div->addClass->title,div->addClass->name -->
 ```
 It means include head.html to the html with command $('div').addClass('title') and $('div').addClass('name')
-'::' means it has command, 
-if you just do not want use command, you can use like that:
+
+'::' means it has command. 
+
+If you just do not want use command, you can use like that:
 ```html
 <!-- @@include= head.html -->
 ```
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+#### Options
+In this example, the default options are used to replace tag with fragment in test. it will create new html based on 'test/fixtures/123.html' and which named '123.html' into 'dest' directory.
 
 ```js
 grunt.initConfig({
-  html_fragment: {
-    options: {},
-    files: {
-      'dest/': ['src/123.html'],
-    },
+  options: {
+    fragmentPath:'test/fragment'
   },
-});
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
   html_fragment: {
-    options: {
-      fragmentPath: 'fragment/'
-    },
     files: {
-      'dest/': ['src/123.html'],
+      'dest/': ['test/fixtures/123.html'],
     },
-  },
+  }
 });
 ```
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+In lieu of a formal style guide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-0.1.2 remove the style and script which is repetitive
+0.1.3 remove the style and script which is repetitive
+
 0.1.1 add @@include and ::(with jquery command);
