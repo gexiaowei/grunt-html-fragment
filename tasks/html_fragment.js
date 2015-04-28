@@ -1,6 +1,6 @@
 /*
  * grunt-html-fragment
- * https://github.com/Vivian/grunt-html-fragment
+ * https://github.com/gexiaowei/grunt-html-fragment
  *
  * Copyright (c) 2015 gandxiaowei@gmail.com
  * Licensed under the MIT license.
