@@ -19,17 +19,31 @@ module.exports = function (grunt) {
     grunt.registerMultiTask('html_fragment', 'The best Grunt plugin ever.', function () {
         // Merge task-specific and/or target-specific options with these defaults.
         var options = this.options({
-            punctuation: '',
-            separator: ', ',
-            fragmentPath: 'fragment/'
+            fragmentPath: 'fragment',
+            needReplacePath: true,
+            pathDefined: [],
+            absoluteHeads: []
         });
+
+        //定义绝对路径开头
+        var absoluteHeads = ['http://', 'https://', '\\\\'].concat(options.absoluteHeads),
+            absoluteReg = new RegExp('^(' + absoluteHeads.join('|') + ')');
+        //定义需要替换路径的标签信息
+        var replacePathTags = [
+            {tag: 'img', attr: 'src'},
+            {tag: 'script', attr: 'src'},
+            {tag: 'link', attr: 'href'},
+            {tag: 'a', attr: 'href'}
+        ].concat(options.pathDefined);
 
         /**
          * 获取替换的html碎片内容
          * @param fragment HTML碎片文件
          * @param commandInfo 需要改变的命令
+         * @param output 碎片导入的文件路径
          */
-        function getReplaceHTML(fragment, commandInfo) {
+        function getReplaceHTML(fragmentPath, commandInfo, output) {
+            var fragment = grunt.file.read(fragmentPath);
             var $ = cheerio.load(fragment, {decodeEntities: false});
             if (commandInfo) {
                 var commands = commandInfo.split(',');
@@ -40,23 +54,39 @@ module.exports = function (grunt) {
                     }
                 });
             }
+            if (options.needReplacePath) {
+                var i, temp;
+                replacePathTags.forEach(function (replacePathTag) {
+                    var tags = $(replacePathTag.tag),
+                        attr = replacePathTag.attr;
+                    for (i = 0; i < tags.length; i++) {
+                        temp = $(tags[i]);
+                        var sourcePath = temp.attr(attr);
+                        if (!isAbsolute(sourcePath)) {
+                            temp.attr(attr, path.relative(path.dirname(output), path.join(options.fragmentPath, sourcePath)));
+                        }
+                    }
+                });
+            }
             return $.html();
         }
 
-        function createHTML(filepath) {
+        function isAbsolute(path) {
+            return absoluteReg.test(path);
+        }
+
+        function createHTML(filepath, output) {
             var contents = grunt.file.read(filepath);
             var match;
             var successCount = 0, failCount = 0;
             grunt.log.writeln('[fragment]start replace file:' + filepath);
             while (match = findInclude(contents)) {
                 var pathWithCommand = match.path.split('::'),
-                    path = pathWithCommand[0],
+                    includePath = pathWithCommand[0],
                     command = pathWithCommand[1];
-                var fragmentPath = options.fragmentPath + path;
-                var fragmentContents;
+                var fragmentPath = path.join(options.fragmentPath, includePath);
                 if (grunt.file.exists(fragmentPath)) {
-                    fragmentContents = grunt.file.read(fragmentPath);
-                    contents = contents.replace(match.content, getReplaceHTML(fragmentContents, command));
+                    contents = contents.replace(match.content, getReplaceHTML(fragmentPath, command, output));
                     successCount++;
                 } else {
                     contents = contents.replace(match.content, '');
@@ -88,7 +118,6 @@ module.exports = function (grunt) {
                     $('head').append(style);
                 }
             }
-
             return $.html();
         }
 
@@ -115,8 +144,8 @@ module.exports = function (grunt) {
                 }
             }).map(function (filepath) {
                 // Read file source.
-                var outPath = f.dest + path.basename(filepath);
-                var content = createHTML(filepath);
+                var outPath = path.join(f.dest, path.basename(filepath));
+                var content = createHTML(filepath, outPath);
                 // Print a success message.
                 grunt.log.writeln('File "' + outPath + '" created.');
                 return grunt.file.write(outPath, content, {encoding: 'utf-8'});
