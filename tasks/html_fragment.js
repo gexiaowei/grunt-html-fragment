@@ -30,7 +30,7 @@ module.exports = function (grunt) {
          * @param commandInfo 需要改变的命令
          */
         function getReplaceHTML(fragment, commandInfo) {
-            var $ = cheerio.load(fragment);
+            var $ = cheerio.load(fragment, {decodeEntities: false});
             if (commandInfo) {
                 var commands = commandInfo.split(',');
                 commands.forEach(function (command) {
@@ -47,7 +47,7 @@ module.exports = function (grunt) {
             var contents = grunt.file.read(filepath);
             var match;
             var successCount = 0, failCount = 0;
-            grunt.log.warn('==>start replace file:' + filepath);
+            grunt.log.writeln('[fragment]start replace file:' + filepath);
             while (match = findInclude(contents)) {
                 var pathWithCommand = match.path.split('::'),
                     path = pathWithCommand[0],
@@ -63,8 +63,8 @@ module.exports = function (grunt) {
                     failCount++
                 }
             }
-            grunt.log.warn('==>end replace with ' + successCount + ' succeed,' + failCount + ' failed!');
-            var $ = cheerio.load(contents);
+            grunt.log.writeln('[fragment]end replace with ' + successCount + ' succeed,' + failCount + ' failed.');
+            var $ = cheerio.load(contents, {decodeEntities: false});
             var i,
                 scripts = $('script'), styles = $('link'),
                 scriptArr = [], styleArr = [];
@@ -88,6 +88,7 @@ module.exports = function (grunt) {
                     $('head').append(style);
                 }
             }
+
             return $.html();
         }
 
@@ -118,7 +119,8 @@ module.exports = function (grunt) {
                 var content = createHTML(filepath);
                 // Print a success message.
                 grunt.log.writeln('File "' + outPath + '" created.');
-                return grunt.file.write(outPath, content);
+                grunt.log.writeln(content);
+                return grunt.file.write(outPath, content, {encoding: 'utf-8'});
             });
         });
     });
