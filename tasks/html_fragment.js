@@ -36,7 +36,6 @@ module.exports = function (grunt) {
                 commands.forEach(function (command) {
                     var args = command.trim().split('->');
                     if (args.length > 2) {
-                        grunt.log.warn(args[0]);
                         $(args[0])[args[1]](args[2]);
                     }
                 });
@@ -48,8 +47,8 @@ module.exports = function (grunt) {
             var contents = grunt.file.read(filepath);
             var match;
             var successCount = 0, failCount = 0;
+            grunt.log.warn('==>start replace file:' + filepath);
             while (match = findInclude(contents)) {
-                grunt.log.warn('==>match include:' + match.content);
                 var pathWithCommand = match.path.split('::'),
                     path = pathWithCommand[0],
                     command = pathWithCommand[1];
@@ -64,7 +63,7 @@ module.exports = function (grunt) {
                     failCount++
                 }
             }
-            grunt.log.warn('==>End replace(' + successCount + ' success,' + failCount + ' fail)');
+            grunt.log.warn('==>end replace with ' + successCount + ' succeed,' + failCount + ' failed!');
             var $ = cheerio.load(contents);
             var i,
                 scripts = $('script'), styles = $('link'),
@@ -105,7 +104,7 @@ module.exports = function (grunt) {
         // Iterate over all specified file groups.
         this.files.forEach(function (f) {
             // Concat specified files.
-            var src = f.src.filter(function (filepath) {
+            f.src.filter(function (filepath) {
                 // Warn on and remove invalid source files (if nonull was set).
                 if (!grunt.file.exists(filepath)) {
                     grunt.log.warn('Source file "' + filepath + '" not found.');
@@ -115,15 +114,12 @@ module.exports = function (grunt) {
                 }
             }).map(function (filepath) {
                 // Read file source.
-                return createHTML(filepath);
+                var outPath = f.dest + path.basename(filepath);
+                var content = createHTML(filepath);
+                // Print a success message.
+                grunt.log.writeln('File "' + outPath + '" created.');
+                return grunt.file.write(outPath, content);
             });
-
-            // Write the destination file.
-            var outPath = f.dest + path.basename(f.src);
-            grunt.file.write(outPath, src);
-
-            // Print a success message.
-            grunt.log.writeln('File "' + outPath + '" created.');
         });
     });
 
