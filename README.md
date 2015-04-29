@@ -39,9 +39,27 @@ grunt.initConfig({
 
 #### options.fragmentPath
 Type: `String`
-Default value: `'fragment/'`
+Default value: `'fragment'`
 
 A string value that is used to get all the fragment files.
+
+#### options.needReplacePath
+Type: `Boolean`
+Default value: `true`
+
+A boolean value that is used to decided whether replace the relative source link that.
+
+#### options.pathDefined
+Type: `Array`
+Default value: `[]`
+
+A array value that is used to add your custom tag which has relative source link. you should push Object has tag and attr value like {tag:'tag',attr:'attr'}
+
+#### options.absoluteHeads
+Type: `Array`
+Default value: `[]`
+
+A array value that is used to mark the source link start with.
 
 
 ### Usage Examples
@@ -77,6 +95,10 @@ grunt.initConfig({
 In lieu of a formal style guide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-0.1.3 remove the style and script which is repetitive
+0.1.7 add a function about replace relative path;
+
+0.1.5 fixed some bugs;
+
+0.1.3 remove the style and script which is repetitive;
 
 0.1.1 add @@include and ::(with jquery command);
