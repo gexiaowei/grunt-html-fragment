@@ -119,7 +119,6 @@ module.exports = function (grunt) {
                 var content = createHTML(filepath);
                 // Print a success message.
                 grunt.log.writeln('File "' + outPath + '" created.');
-                grunt.log.writeln(content);
                 return grunt.file.write(outPath, content, {encoding: 'utf-8'});
             });
         });
