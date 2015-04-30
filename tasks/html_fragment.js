@@ -19,7 +19,7 @@ module.exports = function (grunt) {
     grunt.registerMultiTask('html_fragment', 'The best Grunt plugin ever.', function () {
         // Merge task-specific and/or target-specific options with these defaults.
         var options = this.options({
-            fragmentPath: 'fragment',
+            fragmentPath: 'fragment/',
             needReplacePath: true,
             pathDefined: [],
             absoluteHeads: []
@@ -84,7 +84,7 @@ module.exports = function (grunt) {
                 var pathWithCommand = match.path.split('::'),
                     includePath = pathWithCommand[0],
                     command = pathWithCommand[1];
-                var fragmentPath = path.join(options.fragmentPath, includePath);
+                var fragmentPath = options.fragmentPath + includePath;
                 if (grunt.file.exists(fragmentPath)) {
                     contents = contents.replace(match.content, getReplaceHTML(fragmentPath, command, output));
                     successCount++;
