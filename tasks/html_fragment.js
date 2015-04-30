@@ -62,7 +62,7 @@ module.exports = function (grunt) {
                     for (i = 0; i < tags.length; i++) {
                         temp = $(tags[i]);
                         var sourcePath = temp.attr(attr);
-                        if (!isAbsolute(sourcePath)) {
+                        if (sourcePath && !isAbsolute(sourcePath)) {
                             temp.attr(attr, path.relative(path.dirname(output), path.join(options.fragmentPath, sourcePath)));
                         }
                     }
@@ -84,7 +84,7 @@ module.exports = function (grunt) {
                 var pathWithCommand = match.path.split('::'),
                     includePath = pathWithCommand[0],
                     command = pathWithCommand[1];
-                var fragmentPath = options.fragmentPath + includePath;
+                var fragmentPath = path.join(options.fragmentPath, includePath);
                 if (grunt.file.exists(fragmentPath)) {
                     contents = contents.replace(match.content, getReplaceHTML(fragmentPath, command, output));
                     successCount++;
