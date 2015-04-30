@@ -1,7 +1,7 @@
 {
   "name": "grunt-html-fragment",
   "description": "A plugin for combine fragments with template into a new html file. It also with clean the style and script which is repetitive in the new html file.",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "homepage": "https://github.com/gexiaowei/grunt-html-fragment",
   "author": {
     "name": "Vivian",
