@@ -132,7 +132,10 @@ module.exports = function (grunt) {
                     script.remove();
                 } else {
                     scriptArr.push(source);
-                    script.attr('src', getMinPath(source, output));
+                    if (source) {
+                        script.attr('src', getMinPath(source, output));
+                    }
+
                 }
             }
             //除去重复引用的style文件
@@ -145,7 +148,10 @@ module.exports = function (grunt) {
                     styleArr.push(source);
                     //在head中引用css样式
                     $('head').append(style);
-                    style.attr('href', getMinPath(source, output));
+                    if (source) {
+                        style.attr('href', getMinPath(source, output));
+                    }
+
                 }
             }
             return $.html();
