@@ -31,7 +31,8 @@ module.exports = function (grunt) {
         // Configuration to be run (and then tested).
         html_fragment: {
             options: {
-                fragmentPath: 'test/fragment/'
+                fragmentPath: 'test/fragment/',
+                useMin: true
             },
             build: {
                 files: {

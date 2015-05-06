@@ -61,6 +61,11 @@ Default value: `[]`
 
 A array value that is used to mark the source link start with.
 
+#### options.useMin
+Type: `Boolean`
+Default value: `false`
+
+A boolean value that is used to decided whether replace the min source link like {name}.min.js or {name}.min.css.
 
 ### Usage Examples
 ```html
@@ -81,7 +86,8 @@ In this example, the default options are used to replace tag with fragment in te
 ```js
 grunt.initConfig({
   options: {
-    fragmentPath:'test/fragment'
+    fragmentPath:'test/fragment',
+    useMin:false
   },
   html_fragment: {
     files: {
@@ -95,6 +101,8 @@ grunt.initConfig({
 In lieu of a formal style guide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+0.1.10 add a function about replace min source path;
+
 0.1.7 add a function about replace relative path;
 
 0.1.5 fixed some bugs;
