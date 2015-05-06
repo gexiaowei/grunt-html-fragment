@@ -145,7 +145,7 @@ module.exports = function (grunt) {
                     styleArr.push(source);
                     //在head中引用css样式
                     $('head').append(style);
-                    style.attr('href', getMinPath(source, output))
+                    style.attr('href', getMinPath(source, output));
                 }
             }
             return $.html();
