@@ -10,8 +10,11 @@
 
 var cheerio = require('cheerio');
 var path = require('path');
+var os = require('os');
 
 module.exports = function (grunt) {
+
+    var isWin = (os.platform().indexOf('win') >= 0);
 
     // Please see the Grunt documentation for more information regarding task
     // creation: http://gruntjs.com/creating-tasks
@@ -64,7 +67,11 @@ module.exports = function (grunt) {
                         temp = $(tags[i]);
                         var sourcePath = temp.attr(attr);
                         if (sourcePath && !isAbsolute(sourcePath)) {
-                            temp.attr(attr, path.relative(path.dirname(output), path.join(options.fragmentPath, sourcePath)));
+                            var relativePath = path.relative(path.dirname(output), path.join(options.fragmentPath, sourcePath));
+                            if (isWin) {
+                                relativePath = relativePath.replace(/\\/g, '/');
+                            }
+                            temp.attr(attr, relativePath);
                         }
                     }
                 });
