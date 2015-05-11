@@ -128,30 +128,30 @@ module.exports = function (grunt) {
             for (i = 0; i < scripts.length; i++) {
                 var script = $(scripts[i]);
                 source = script.attr('src');
+                if (!source) {
+                    continue;
+                }
                 if (scriptArr.indexOf(source) >= 0) {
                     script.remove();
                 } else {
                     scriptArr.push(source);
-                    if (source) {
-                        script.attr('src', getMinPath(source, output));
-                    }
-
+                    script.attr('src', getMinPath(source, output));
                 }
             }
             //除去重复引用的style文件
             for (i = 0; i < styles.length; i++) {
                 var style = $(styles[i]);
                 source = style.attr('href');
+                if (!source) {
+                    continue;
+                }
                 if (styleArr.indexOf(source) >= 0) {
                     style.remove();
                 } else {
                     styleArr.push(source);
                     //在head中引用css样式
                     $('head').append(style);
-                    if (source) {
-                        style.attr('href', getMinPath(source, output));
-                    }
-
+                    style.attr('href', getMinPath(source, output));
                 }
             }
             return $.html();
